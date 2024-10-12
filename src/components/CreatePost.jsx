@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-const CreatePost = () => {
+const CreatePost = ({height}) => {
     const userIdRef = useRef("");
     const titleRef = useRef("");
     const bodyRef = useRef("");
@@ -23,7 +23,7 @@ const views =  viewsRef.current.value;
 
     }
   return (
-    <form  className='d-flex flex-column justify-content-center align-items-center w-100' onSubmit={(e) => handleSubmit(e)}>
+    <form  className='d-flex flex-column justify-content-center align-items-center w-100' style={{height: `${height}`}}  onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="userId">UserID</label>
         <input type="number" className='formInp' ref={userIdRef}/>
 

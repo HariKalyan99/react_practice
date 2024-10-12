@@ -8,3 +8,7 @@
   border-radius: 5px;
   border: 1px solid black;
 }
+
+.postCard {
+  height: 800px;
+}

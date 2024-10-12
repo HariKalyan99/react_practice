@@ -18,7 +18,7 @@ function App() {
     const getAllPosts = async() => {
       try {
         const {data} = await axios.get("http://localhost:8081/posts", signal)
-      console.log(data);
+      setPostList(data);
       } catch (error) {
         console.log(error)
       }
@@ -40,8 +40,8 @@ function App() {
       <Header />
       <div className="d-flex">
         <Sidebar sideBarFn={sideBarFn} sideBarTagActive={sideBarTagActive} />
-        {sideBarTagActive === "home" ? <CreatePost /> :
-        <Dashboard />}
+        {sideBarTagActive === "home" ? <CreatePost height={"100vh"}/> :
+        <Dashboard postList={postList}/>}
       </div>
     </div>
   );
