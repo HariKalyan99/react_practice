@@ -20,7 +20,9 @@ const Dashboard = ({postList}) => {
                 <small className="text-body-secondary">{userId}</small>
                 <small className="text-body-secondary">VIEWS-{views}</small>
               </div>
+
             </div>
+              <button type='button' className='btn btn-warning'>EDIT</button>
           </div>
         </div>)}
 
