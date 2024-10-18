@@ -9,7 +9,7 @@ const Dashboard = ({postList}) => {
     <div className="album py-5 bg-body-tertiary">
     <div className="container-fluid">``
 
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
       
         {postList?.map((post) => <PostCard key={uuidv4()} post={post} />)}
 
