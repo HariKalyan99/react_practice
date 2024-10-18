@@ -72,12 +72,12 @@ const EditPost = ({ editFn, post }) => {
         value={getviews}
       />
 
-      <button type="submit" className="btn btn-dark my-4 px-5">
+      <button type="submit" className="btn btn-dark my-4 p-3">
         EDIT POST
       </button>
       <button
         type="button"
-        className="btn btn-danger px-5"
+        className="btn btn-warning p-3"
         onClick={() => editFn()}
       >
         DON'T EDIT
