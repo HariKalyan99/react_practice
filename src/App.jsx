@@ -10,6 +10,7 @@ function App() {
   const [sideBarTagActive, setSideBarTagActive] = useState("home");
 
   const [postList, setPostList] = useState("");
+  const [getNewBlog, setNewBlog] = useState("");
 
 
   useEffect(() => {
@@ -30,18 +31,41 @@ function App() {
       controller.abort();
     }
   }, [])
+  
+  useEffect(() => {
+    const newBlog = async(blog) => {
+      try {
+        const {data} = await axios.post('http://localhost:8081/posts', {
+          ...blog
+        })
+        setPostList([data, ...postList]);
+    sideBarFn("dashboard")
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    if(Array.isArray(getNewBlog.tags)){
+      newBlog(getNewBlog);
+    }
+  }, [getNewBlog])
 
   const sideBarFn = (val) => {
     setSideBarTagActive(val);
   };
+
+  const postNewBlog = (blog) => {
+    setNewBlog(blog);
+  }
 
   return (
     <div>
       <Header />
       <div className="d-flex">
         <Sidebar sideBarFn={sideBarFn} sideBarTagActive={sideBarTagActive} />
-        {sideBarTagActive === "home" ? <CreatePost height={"100vh"}/> :
-        <Dashboard postList={postList}/>}
+        {sideBarTagActive === "home" ? <CreatePost postNewBlog={postNewBlog} height={"100vh"}/> :
+        <Dashboard postList={postList}/>} 
       </div>
     </div>
   );

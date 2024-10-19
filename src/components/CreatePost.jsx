@@ -1,22 +1,41 @@
 import React, { useRef } from "react";
 
-const CreatePost = ({ height }) => {
+const CreatePost = ({ height, postNewBlog }) => {
   const userIdRef = useRef("");
   const titleRef = useRef("");
   const bodyRef = useRef("");
   const tagsRef = useRef("");
-  const reactionsRef = useRef("");
+  const likesRef = useRef("");
+  const disLikesRef = useRef("");
   const viewsRef = useRef("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const userId = userIdRef.current.value;
+    const userId = Number(userIdRef.current.value);
     const title = titleRef.current.value;
     const body = bodyRef.current.value;
-    const tags = tagsRef.current.value;
-    const reactions = reactionsRef.current.value;
-    const views = viewsRef.current.value;
+    const tags = tagsRef.current.value.split("#");
+    const likes = Number(likesRef.current.value);
+    const dislikes = Number(disLikesRef.current.value);
+    const views = Number(viewsRef.current.value);
+
+    postNewBlog({
+      userId,
+      title,
+      body,
+      tags,
+      reactions: { likes, dislikes },
+      views,
+    });
+
+    userIdRef.current.value = "";
+    titleRef.current.value = "";
+    bodyRef.current.value = "";
+    tagsRef.current.value = "";
+    likesRef.current.value = "";
+    disLikesRef.current.value = "";
+    viewsRef.current.value = "";
   };
   return (
     <form
@@ -34,10 +53,18 @@ const CreatePost = ({ height }) => {
       <textarea type="text" rows={4} cols={50} ref={bodyRef} />
 
       <label htmlFor="Tags">Tags</label>
-      <input type="text" className="formInp" ref={tagsRef} />
+      <input
+        type="text"
+        className="formInp"
+        ref={tagsRef}
+        placeholder="put a #tag after every tag"
+      />
 
-      <label htmlFor="Reactions">Reactions</label>
-      <input type="number" className="formInp" ref={reactionsRef} />
+      <label htmlFor="Reactions">Likes</label>
+      <input type="number" className="formInp" ref={likesRef} />
+
+      <label htmlFor="Reactions">Dislikes</label>
+      <input type="number" className="formInp" ref={disLikesRef} />
 
       <label htmlFor="views">views</label>
       <input type="number" className="formInp" ref={viewsRef} />
