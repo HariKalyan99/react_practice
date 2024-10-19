@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EditPost from "./EditPost";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, deleteFn }) => {
   const [getEdit, setEdit] = useState(false);
 
   const editFn = () => {
@@ -57,6 +57,15 @@ const PostCard = ({ post }) => {
             onClick={() => editFn()}
           >
             EDIT
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-danger p-3 my-2"
+
+            onClick={() => deleteFn(post.id)}
+          >
+            DELETE
           </button>
         </div>
       )}
