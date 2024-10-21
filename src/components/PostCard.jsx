@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EditPost from "./EditPost";
 
-const PostCard = ({ post, deleteFn }) => {
+const PostCard = ({ post, deleteFn, editPostFn }) => {
   const [getEdit, setEdit] = useState(false);
 
   const editFn = () => {
@@ -10,7 +10,7 @@ const PostCard = ({ post, deleteFn }) => {
   return (
     <div className="postCard col">
       {getEdit ? (
-        <EditPost editFn={editFn} post={post} />
+        <EditPost editPostFn={editPostFn} editFn={editFn} post={post} />
       ) : (
         <div className="card shadow-sm h-100">
           <span className="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-dark">

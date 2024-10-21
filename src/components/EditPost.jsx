@@ -1,11 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
-const EditPost = ({ editFn, post }) => {
+const EditPost = ({ editFn, post, editPostFn }) => {
   const [getuserId, setuserId] = useState(post.userId);
   const [gettitle, settitle] = useState(post.title);
   const [getbody, setbody] = useState(post.body);
   const [gettags, settags] = useState(post.tags);
-  const [getreactions, setreactions] = useState(post.reactions);
+  const [getlikes, setlikes] = useState(post.reactions.likes);
+  const [getdislikes, setdislikes] = useState(post.reactions.dislikes);
   const [getviews, setviews] = useState(post.views);
 
   const handleSubmit = (e) => {
@@ -14,9 +15,13 @@ const EditPost = ({ editFn, post }) => {
     const userId = getuserId;
     const title = gettitle;
     const body = getbody;
-    const tags = gettags;
-    const reactions = getreactions;
+    const tags = gettags.split(",");
+    const likes = getlikes;
+    const dislikes = getdislikes;
     const views = getviews;
+
+    editPostFn({userId, title, body, tags, reactions: {likes, dislikes}, views, id:  post.id})
+    editFn();
   };
   return (
     <form
@@ -56,12 +61,19 @@ const EditPost = ({ editFn, post }) => {
         value={gettags}
       />
 
-      <label htmlFor="Reactions">Reactions</label>
+      <label htmlFor="likes">Likes</label>
       <input
         type="number"
         className="formInp"
-        onChange={(e) => setreactions(e.target.value)}
-        value={getreactions}
+        onChange={(e) => setlikes(e.target.value)}
+        value={getlikes}
+      />
+      <label htmlFor="dislikes">Dislikes</label>
+      <input
+        type="number"
+        className="formInp"
+        onChange={(e) => setdislikes(e.target.value)}
+        value={getdislikes}
       />
 
       <label htmlFor="views">views</label>

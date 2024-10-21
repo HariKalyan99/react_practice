@@ -12,6 +12,7 @@ function App() {
   const [postList, setPostList] = useState("");
   const [getNewBlog, setNewBlog] = useState("");
   const [getDelBlog, setDelBlog] = useState(0);
+  const [getEditBlog, setEditBlog] = useState("");
 
 
   useEffect(() => {
@@ -64,10 +65,33 @@ function App() {
     }
 
     
-    if(getDelBlog > 0){
+    if(getDelBlog > 0 || typeof getDelBlog === "string"){
       delBlog(getDelBlog);
     }
   }, [getDelBlog])
+
+
+  useEffect(() => {
+    const editBlog = async({userId, title, body, tags, reactions, views, id}) => {
+      try {
+        const {data} = await axios.put(`http://localhost:8081/posts/${id}`, {
+          userId, title, body, tags, reactions, views
+        })
+        const filteredPostList = postList.filter(x => x.id !== id);
+        setPostList([ data ,...filteredPostList])
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+
+    if(Object.keys(getEditBlog).length === 7){
+      console.log(getEditBlog)
+      editBlog(getEditBlog)
+    }
+
+    
+  }, [getEditBlog])
 
   const sideBarFn = (val) => {
     setSideBarTagActive(val);
@@ -80,6 +104,9 @@ function App() {
   const deleteFn = (id) => {
     setDelBlog(id);
   }
+  const editPostFn = (post) => {
+    setEditBlog(post);
+  }
 
   return (
     <div>
@@ -87,7 +114,7 @@ function App() {
       <div className="d-flex">
         <Sidebar sideBarFn={sideBarFn} sideBarTagActive={sideBarTagActive} />
         {sideBarTagActive === "home" ? <CreatePost postNewBlog={postNewBlog} height={"100vh"}/> :
-        <Dashboard postList={postList} deleteFn={deleteFn}/>} 
+        <Dashboard editPostFn={editPostFn} postList={postList} deleteFn={deleteFn}/>} 
       </div>
     </div>
   );
