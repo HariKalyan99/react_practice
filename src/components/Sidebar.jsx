@@ -1,13 +1,10 @@
 import React, { useContext } from "react";
 import { postStore } from "../store/PostStore";
-import { Link, useNavigation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const { sideBarFn, sideBarTagActive } = useContext(postStore);
   
-  const navigate = useNavigation();
-
-
   return (
     <div>
       <div

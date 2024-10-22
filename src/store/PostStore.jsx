@@ -1,5 +1,6 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const postStore = createContext({
   postList: [],
@@ -10,13 +11,34 @@ export const postStore = createContext({
   editPostFn: () => {},
 });
 
+function pureReducerFunction(currentState, action){
+    let newPostList = currentState;
+    switch(action.type){
+        case 'INITIAL_POSTS':
+            return newPostList = action.payload.data;
+        case 'ADD_POSTS':
+            return newPostList = [action.payload.data, ...currentState];
+        case 'DEL_POSTS':
+            const filterBlogs = currentState.filter((x) => x.id !== action.payload.id);
+            return newPostList = filterBlogs;
+        case 'EDIT_POSTS':
+            const filteredPostList = currentState.filter((x) => x.id !== action.payload.id);
+            return newPostList = [action.payload.data, ...filteredPostList]
+        default:
+            return newPostList;
+    }
+}
+
 const PostStoreContextProvider = ({ children }) => {
   const [sideBarTagActive, setSideBarTagActive] = useState("home");
 
-  const [postList, setPostList] = useState("");
+//   const [postList, setPostList] = useState("");
   const [getNewBlog, setNewBlog] = useState("");
   const [getDelBlog, setDelBlog] = useState(0);
   const [getEditBlog, setEditBlog] = useState("");
+
+  const navigate = useNavigate();
+  const [postList, dispatchReducerFunction] = useReducer(pureReducerFunction, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -24,7 +46,13 @@ const PostStoreContextProvider = ({ children }) => {
     const getAllPosts = async () => {
       try {
         const { data } = await axios.get("http://localhost:8081/posts", signal);
-        setPostList(data);
+        // setPostList(data);
+        dispatchReducerFunction({
+            type: "INITIAL_POSTS",
+            payload: {
+                data
+            }
+        })
       } catch (error) {
         console.log(error);
       }
@@ -43,8 +71,15 @@ const PostStoreContextProvider = ({ children }) => {
         const { data } = await axios.post("http://localhost:8081/posts", {
           ...blog,
         });
-        setPostList([data, ...postList]);
+        // setPostList([data, ...postList]);
+        dispatchReducerFunction({
+            type: "ADD_POSTS",
+            payload: {
+                data
+            }
+        })
         sideBarFn("dashboard");
+        navigate("/dashboard");
       } catch (error) {
         console.log(error);
       }
@@ -59,8 +94,13 @@ const PostStoreContextProvider = ({ children }) => {
     const delBlog = async (id) => {
       try {
         await axios.delete(`http://localhost:8081/posts/${id}`);
-        const filterBlogs = postList.filter((x) => x.id !== id);
-        setPostList(filterBlogs);
+        // setPostList(filterBlogs);
+        dispatchReducerFunction({
+            type: "DEL_POSTS",
+            payload: {
+                id
+            }
+        })
       } catch (error) {
         console.log("error", error);
       }
@@ -90,15 +130,21 @@ const PostStoreContextProvider = ({ children }) => {
           reactions,
           views,
         });
-        const filteredPostList = postList.filter((x) => x.id !== id);
-        setPostList([data, ...filteredPostList]);
+        // const filteredPostList = postList.filter((x) => x.id !== id);
+        // setPostList([data, ...filteredPostList]);
+        dispatchReducerFunction({
+            type: "EDIT_POSTS",
+            payload: {
+                data,
+                id
+            }  
+        })
       } catch (error) {
         console.log(error);
       }
     };
 
     if (Object.keys(getEditBlog).length === 7) {
-      console.log(getEditBlog);
       editBlog(getEditBlog);
     }
   }, [getEditBlog]);
