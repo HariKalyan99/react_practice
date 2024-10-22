@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { postStore } from '../App'
 
-const Sidebar = ({sideBarFn,
-    sideBarTagActive}) => {
+const Sidebar = () => {
+  const {sideBarFn,
+    sideBarTagActive} = useContext(postStore);
   return (
     <div>
         <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style={{width: "280px", height: "100%"}}>

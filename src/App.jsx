@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import CreatePost from "./components/CreatePost";
-import EditPost from "./components/EditPost";
 import Dashboard from "./components/Dashboard";
 import axios from "axios";
+
+export const postStore = createContext({
+  postList: [],
+  sideBarTagActive: "",
+  sideBarFn: () => {},
+postNewBlog: () => {},
+deleteFn: () => {},
+editPostFn: () => {}
+})
 
 function App() {
   const [sideBarTagActive, setSideBarTagActive] = useState("home");
@@ -109,14 +117,18 @@ function App() {
   }
 
   return (
-    <div>
+    <postStore.Provider value={{postList, sideBarTagActive,
+      sideBarFn,
+      postNewBlog,
+      deleteFn,
+      editPostFn}}>
       <Header />
       <div className="d-flex">
-        <Sidebar sideBarFn={sideBarFn} sideBarTagActive={sideBarTagActive} />
-        {sideBarTagActive === "home" ? <CreatePost postNewBlog={postNewBlog} height={"100vh"}/> :
-        <Dashboard editPostFn={editPostFn} postList={postList} deleteFn={deleteFn}/>} 
+        <Sidebar  />
+        {sideBarTagActive === "home" ? <CreatePost /> :
+        <Dashboard />} 
       </div>
-    </div>
+    </postStore.Provider>
   );
 }
 

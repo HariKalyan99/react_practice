@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PostCard from './PostCard'
 import {v4 as uuidv4} from 'uuid';
+import { postStore } from '../App';
 
-const Dashboard = ({postList, deleteFn, editPostFn}) => {
+const Dashboard = () => {
 
+  const {postList, deleteFn, editPostFn} = useContext(postStore);
   
   return (
     <div className="album py-5 bg-body-tertiary">

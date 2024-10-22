@@ -1,6 +1,8 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
+import { postStore } from "../App";
 
-const CreatePost = ({ height, postNewBlog }) => {
+const CreatePost = () => {
+  const { postNewBlog } = useContext(postStore)
   const userIdRef = useRef("");
   const titleRef = useRef("");
   const bodyRef = useRef("");
@@ -40,7 +42,7 @@ const CreatePost = ({ height, postNewBlog }) => {
   return (
     <form
       className="d-flex flex-column justify-content-center align-items-center w-100"
-      style={{ height: `${height}` }}
+      style={{ height: `${"100vh"}` }}
       onSubmit={(e) => handleSubmit(e)}
     >
       <label htmlFor="userId">UserID</label>
