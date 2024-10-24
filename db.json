@@ -499,22 +499,7 @@
         "dislikes": 52
       },
       "views": 11
-    },
-    {
-      "userId": "91",
-      "title": "What is closures?",
-      "body": "function bundled with lexical environment is called as closures.",
-      "tags": [
-        "error",
-        "free",
-        "edited"
-      ],
-      "reactions": {
-        "likes": "454",
-        "dislikes": "855"
-      },
-      "views": "112",
-      "id": "23ec"
     }
+   
   ]
 }
