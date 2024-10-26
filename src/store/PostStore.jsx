@@ -46,7 +46,6 @@ const PostStoreContextProvider = ({ children }) => {
     const getAllPosts = async () => {
       try {
         const { data } = await axios.get("http://localhost:8081/posts", signal);
-        // setPostList(data);
         dispatchReducerFunction({
             type: "INITIAL_POSTS",
             payload: {
@@ -71,7 +70,6 @@ const PostStoreContextProvider = ({ children }) => {
         const { data } = await axios.post("http://localhost:8081/posts", {
           ...blog,
         });
-        // setPostList([data, ...postList]);
         dispatchReducerFunction({
             type: "ADD_POSTS",
             payload: {
@@ -94,7 +92,6 @@ const PostStoreContextProvider = ({ children }) => {
     const delBlog = async (id) => {
       try {
         await axios.delete(`http://localhost:8081/posts/${id}`);
-        // setPostList(filterBlogs);
         dispatchReducerFunction({
             type: "DEL_POSTS",
             payload: {
@@ -130,8 +127,6 @@ const PostStoreContextProvider = ({ children }) => {
           reactions,
           views,
         });
-        // const filteredPostList = postList.filter((x) => x.id !== id);
-        // setPostList([data, ...filteredPostList]);
         dispatchReducerFunction({
             type: "EDIT_POSTS",
             payload: {
