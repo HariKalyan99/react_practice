@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useCallback, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -46,12 +46,14 @@ const PostStoreContextProvider = ({ children }) => {
     const getAllPosts = async () => {
       try {
         const { data } = await axios.get("http://localhost:8081/posts", signal);
-        dispatchReducerFunction({
+        useCallback(() => {
+dispatchReducerFunction({
             type: "INITIAL_POSTS",
             payload: {
                 data
             }
         })
+        }, [dispatchReducerFunction])
       } catch (error) {
         console.log(error);
       }
@@ -70,12 +72,14 @@ const PostStoreContextProvider = ({ children }) => {
         const { data } = await axios.post("http://localhost:8081/posts", {
           ...blog,
         });
-        dispatchReducerFunction({
+        useCallback(() => {
+dispatchReducerFunction({
             type: "ADD_POSTS",
             payload: {
                 data
             }
         })
+        }, [dispatchReducerFunction])
         sideBarFn("dashboard");
         navigate("/dashboard");
       } catch (error) {
@@ -92,12 +96,14 @@ const PostStoreContextProvider = ({ children }) => {
     const delBlog = async (id) => {
       try {
         await axios.delete(`http://localhost:8081/posts/${id}`);
-        dispatchReducerFunction({
+        useCallback(() => {
+          dispatchReducerFunction({
             type: "DEL_POSTS",
             payload: {
                 id
             }
         })
+        }, [dispatchReducerFunction])
       } catch (error) {
         console.log("error", error);
       }
@@ -127,13 +133,15 @@ const PostStoreContextProvider = ({ children }) => {
           reactions,
           views,
         });
-        dispatchReducerFunction({
+        useCallback(() => {
+          dispatchReducerFunction({
             type: "EDIT_POSTS",
             payload: {
                 data,
                 id
             }  
         })
+        }, [dispatchReducerFunction])
       } catch (error) {
         console.log(error);
       }
